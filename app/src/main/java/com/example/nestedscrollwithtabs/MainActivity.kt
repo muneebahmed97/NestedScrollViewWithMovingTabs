@@ -1,7 +1,9 @@
 package com.example.nestedscrollwithtabs
 
+import android.graphics.drawable.AnimationDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nestedscrollwithtabs.adapter.ExperienceAdapter
 import com.example.nestedscrollwithtabs.adapter.SkillsAdapter
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity(), TabAdapter.TabItemListener,
     private lateinit var tabAdapter: TabAdapter
     private val mList: ArrayList<TabItem> = ArrayList()
     private lateinit var horizontalLayout: LinearLayoutManager
+    private var animationDrawable = AnimationDrawable()
 
     override fun onNestedScrollViewStateChanged(state: Int) {
     }
@@ -51,9 +54,13 @@ class MainActivity : AppCompatActivity(), TabAdapter.TabItemListener,
     }
 
     private fun initViews() {
+        initAnimDrawable()
+
         tabList()
+
         tabAdapter = TabAdapter(this@MainActivity, mList, this@MainActivity)
-        horizontalLayout = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+        horizontalLayout =
+            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
 
         rv_tabs.apply {
             layoutManager = horizontalLayout
@@ -72,7 +79,13 @@ class MainActivity : AppCompatActivity(), TabAdapter.TabItemListener,
 
         initListeners()
     }
-    
+
+    private fun initAnimDrawable() {
+        animationDrawable = frame_layout.background as AnimationDrawable
+        animationDrawable.setEnterFadeDuration(3000)
+        animationDrawable.setExitFadeDuration(3000)
+        animationDrawable.start()
+    }
 
     private fun initListeners() {
         nested_scroll_view.setScrollListener(this)
